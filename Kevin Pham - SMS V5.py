@@ -34,6 +34,7 @@ def main():
         printBoard(BOARDER, Grid)
         print('MISSED MISSILES :', missedGuess)
         boardRound += 1
+        
 
         userInput = playerChoice(userInput, Grid, missedGuess, shipCords)
         if userInput == "QUIT":
@@ -102,23 +103,36 @@ def checkChoice(userInput, Grid, missedGuess, shipCords):
     #print('This is shipcord in checkchoice', shipCords)  # Print shipCords before any modifications
     row = ord(userInput[0]) - ord('A')
     col = int(userInput[1:]) - 1
+    
+    # Check if the spot has already been hit
+    if Grid[row][col + 1] == 'X' or Grid[row][col + 1] == 'M':
+        print('You already hit this spot!')
+        return missedGuess
+    
+    hit = False
     for ship in shipCords:
-        for location in ship:
-            #shipRow = ord(location[0]) - ord('A')
-            #shipCol = int(location[1:]) - 1
-            if row == row and col == col:
-                print('Hit')
-                Grid[row][col] = 'X'
-                ship.remove(location)
-            elif row != row and col != col:
-                print('Miss')
-                Grid[row][col] = 'M'
+        if userInput in ship:
+            print('HIT')
+            Grid[row][col + 1] = 'X'
+            ship.remove(userInput)  # Remove the hit location from the ship
+            hit = True
+            break  # Exit the loop once a hit is found
+    if not hit:
+        print('MISS')
+        missedGuess = missedGuess + 1
+        Grid[row][col + 1] = 'M'
+    return missedGuess
 
+
+    
 '''
 COMMENT GOES HERE
 '''
-#def gameOver(userName, Grid):
+def gameOver(userName, userInput, Grid, missedGuess, shipCords):
+    print("---------- {userName} GAME OVER ----------")
 
+    print('Final Board:')
+    
 
 
     
