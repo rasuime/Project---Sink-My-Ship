@@ -23,6 +23,7 @@ def main():
     boardRound = 0
     shipsFound = set()
     shipCords = []
+    
 # BOARD INITIALIZE
     BOARDER = '---------------------------------------------'
     Grid = [['A', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],['B', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],['C', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],['D', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],['E', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -34,9 +35,9 @@ def main():
         printBoard(BOARDER, Grid)
         print('MISSED MISSILES :', missedGuess)
         boardRound += 1
-        
+        print('SHIP DESTROYED :')
 
-        userInput = playerChoice(userInput, Grid, missedGuess, shipCords)
+        userInput = playerChoice(userName, Grid, missedGuess, shipCords)
         if userInput == "QUIT":
             return
 
@@ -88,7 +89,7 @@ def playerChoice(userName, Grid, missedGuess, shipCords):
         userInput = input(f"{userName}, Please Enter Your Guess (e.g., B7) or type 'quit' To End The Game: ").upper()
         print('')
         if userInput == "QUIT":
-            gameOver(userName, Grid)
+            gameOver(userName, Grid, missedGuess, shipCords)
         elif len(userInput) != 2 or userInput[0] not in "ABCDEFGHIJ" or userInput[1] not in "12345678910":
             print(f"{userName}, That Is An Invalid Input. Please Enter A Valid Input Such As A9.")
         else:
@@ -112,13 +113,13 @@ def checkChoice(userInput, Grid, missedGuess, shipCords):
     hit = False
     for ship in shipCords:
         if userInput in ship:
-            print('HIT')
+            print('!!!A Ship Has Been Hit!!!','\n')
             Grid[row][col + 1] = 'X'
             ship.remove(userInput)  # Remove the hit location from the ship
             hit = True
             break  # Exit the loop once a hit is found
     if not hit:
-        print('MISS')
+        print('!!!You Missed Try Again!!!')
         missedGuess = missedGuess + 1
         Grid[row][col + 1] = 'M'
     return missedGuess
@@ -128,8 +129,9 @@ def checkChoice(userInput, Grid, missedGuess, shipCords):
 '''
 COMMENT GOES HERE
 '''
-def gameOver(userName, userInput, Grid, missedGuess, shipCords):
-    print("---------- {userName} GAME OVER ----------")
+def gameOver(userName, Grid, missedGuess, shipCords):
+    print(f"---------- {userName} GAME OVER ----------")
+    return
 
     print('Final Board:')
     
